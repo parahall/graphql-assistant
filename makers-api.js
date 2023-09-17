@@ -1,32 +1,81 @@
-const {GooglePaLM} = require('langchain/llms/googlepalm');
-const {GooglePaLMEmbeddings} = require('langchain/embeddings/googlepalm');
+const {TextServiceClient} = require('@google-ai/generativelanguage').v1beta2;
+const {GoogleAuth} = require('google-auth-library');
+const {DiscussServiceClient} = require('@google-ai/generativelanguage');
 
-const prompt = async () => {
-  const model = new GooglePaLM({
-    apiKey: process.env.GOOGLE_PALM_API_KEY,
-    temperature: 0.01,
-    modelName: 'models/text-bison-001',
+const chat = async () => {
+  const MODEL_NAME = 'models/chat-bison-001';
+  const API_KEY = process.env.GOOGLE_PALM_API_KEY;
+
+  const client = new DiscussServiceClient({
+    authClient: new GoogleAuth().fromAPIKey(API_KEY),
   });
-  const res = await model.call(
-      'What would be a good company name for a company that makes colorful socks?');
-  console.log({res});
-  return res;
+
+  const result = await client.generateMessage({
+    model: MODEL_NAME,
+    temperature: 0.5, // Optional. Value `0.0` always uses the highest-probability result.
+    candidateCount: 1, // Optional. The number of candidate results to generate.
+    prompt: {
+      // optional, preamble context to prime responses
+      context: 'Respond to all questions with a rhyming poem.',
+      // Optional. Examples for further fine-tuning of responses.
+      examples: [
+        {
+          input: {content: 'What is the capital of California?'},
+          output: {
+            content:
+                `If the capital of California is what you seek,
+Sacramento is where you ought to peek.`,
+          },
+        },
+      ],
+      // Required. Alternating prompt/response messages.
+      messages: [{content: 'How tall is the Eiffel Tower?'}],
+    },
+  });
+
+  console.log(result[0].candidates[0].content);
+  return result;
 };
 
-const embeddings = async () => {
-  const model = new GooglePaLMEmbeddings({
-    apiKey: process.env.GOOGLE_PALM_API_KEY,
-    modelName: 'models/embedding-gecko-001',
+const prompt = async () => {
+  const MODEL_NAME = 'models/text-bison-001';
+  const API_KEY = process.env.GOOGLE_PALM_API_KEY;
+
+  const client = new TextServiceClient({
+    authClient: new GoogleAuth().fromAPIKey(API_KEY),
   });
-  /* Embed queries */
-  const res = await model.embedQuery(
-      'What would be a good company name for a company that makes colorful socks?',
-  );
-  console.log({res});
-  return res;
+
+  const prompt = 'Repeat after me: one, two,';
+
+  const result = await client.generateText({
+    model: MODEL_NAME,
+    prompt: {
+      text: prompt,
+    },
+  });
+  console.log(JSON.stringify(result));
+  return result;
+};
+
+const embeddings = async (text) => {
+  const MODEL_NAME = 'models/embedding-gecko-001';
+  const API_KEY = process.env.GOOGLE_PALM_API_KEY;
+
+  const client = new TextServiceClient({
+    authClient: new GoogleAuth().fromAPIKey(API_KEY),
+  });
+
+  const result = await client.embedText({
+    model: MODEL_NAME,
+    text: text,
+  });
+
+  // console.log(JSON.stringify(result[0].embedding.value));
+  return result[0].embedding;
 };
 
 module.exports = {
   prompt,
   embeddings,
+  chat,
 };
