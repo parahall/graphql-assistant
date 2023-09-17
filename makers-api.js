@@ -4,8 +4,8 @@ const {GooglePaLMEmbeddings} = require('langchain/embeddings/googlepalm');
 const prompt = async () => {
   const model = new GooglePaLM({
     apiKey: process.env.GOOGLE_PALM_API_KEY,
-    temperature: 0.01, // OPTIONAL
-    modelName: 'models/text-bison-001', // OPTIONAL
+    temperature: 0.01,
+    modelName: 'models/text-bison-001',
   });
   const res = await model.call(
       'What would be a good company name for a company that makes colorful socks?');
