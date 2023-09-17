@@ -1,0 +1,28 @@
+{
+  "name": "monday-com-graphql-assistant",
+  "version": "1.0.0",
+  "description": "Project to showcase how to make LLM output proper GraphQL Query",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parahall/graphql-assistant.git"
+  },
+  "keywords": [
+    "graphql",
+    "llm",
+    "embeddings",
+    "monday.com"
+  ],
+  "author": "Yonatan (Yoni)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parahall/graphql-assistant/issues"
+  },
+  "homepage": "https://github.com/parahall/graphql-assistant#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
