@@ -7,10 +7,6 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
 app.post('/prompt', async (req, res) => {
   const prompt = req.body.prompt;
   const result = await makersAPI.prompt(prompt);
@@ -22,8 +18,8 @@ app.post('/generate_description', async (req, res) => {
   res.status(200).json(result);
 });
 
-app.post('/embeddings', async (req, res) => {
-  const result = await makersAPI.embeddings(req.body.text);
+app.post('/fill_index_with_vectors', async (req, res) => {
+  const result = await graphqlAssistantAgent.fillIndexWithVectors()
   res.status(200).json(result);
 });
 

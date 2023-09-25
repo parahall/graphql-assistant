@@ -4,6 +4,9 @@
   "description": "Project to showcase how to make LLM output proper GraphQL Query",
   "mai  n": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "debug": "node --inspect index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
