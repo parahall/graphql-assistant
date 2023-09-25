@@ -37,7 +37,7 @@ Sacramento is where you ought to peek.`,
     return result;
 };
 
-const prompt = async (prompt) => {
+const prompt = async (prompt, config) => {
     const MODEL_NAME = 'models/text-bison-001';
     const API_KEY = process.env.GOOGLE_PALM_API_KEY;
 
@@ -51,6 +51,7 @@ const prompt = async (prompt) => {
         prompt: {
             text: prompt,
         },
+        ...config,
     });
     console.log('Result:', JSON.stringify(result));
     return result;

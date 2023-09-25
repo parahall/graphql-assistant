@@ -7,12 +7,6 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT;
 
-app.post('/prompt', async (req, res) => {
-  const prompt = req.body.prompt;
-  const result = await makersAPI.prompt(prompt);
-  res.status(200).json(result);
-});
-
 app.post('/generate_description', async (req, res) => {
   const result = await graphqlAssistantAgent.generateDescription();
   res.status(200).json(result);
@@ -23,18 +17,13 @@ app.post('/fill_index_with_vectors', async (req, res) => {
   res.status(200).json(result);
 });
 
-app.post('/chat', async (req, res) => {
-  const result = await makersAPI.chat();
+
+app.get('/search', async (req, res) => {
+  const result = await graphqlAssistantAgent.getGraphQLQuery(req.body.text , true)
   res.status(200).json(result);
 });
-
-app.post('/add-vectors', async (req, res) => {
-  const result = await vectorDbApi.addVectors(req.body.data)
-  res.status(200).json(result);
-});
-
-app.post('/search', async (req, res) => {
-  const result = await vectorDbApi.queryVectors(req.body.text)
+app.get('/search_no_data', async (req, res) => {
+  const result = await graphqlAssistantAgent.getGraphQLQuery(req.body.text , false)
   res.status(200).json(result);
 });
 
