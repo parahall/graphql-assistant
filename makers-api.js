@@ -37,7 +37,7 @@ Sacramento is where you ought to peek.`,
   return result;
 };
 
-const prompt = async () => {
+const prompt = async (prompt) => {
   const MODEL_NAME = 'models/text-bison-001';
   const API_KEY = process.env.GOOGLE_PALM_API_KEY;
 
@@ -45,15 +45,14 @@ const prompt = async () => {
     authClient: new GoogleAuth().fromAPIKey(API_KEY),
   });
 
-  const prompt = 'Repeat after me: one, two,';
-
+  console.log('Calling GenerateText.');
   const result = await client.generateText({
     model: MODEL_NAME,
     prompt: {
       text: prompt,
     },
   });
-  console.log(JSON.stringify(result));
+  console.log('Result:', JSON.stringify(result));
   return result;
 };
 

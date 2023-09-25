@@ -218,3 +218,4 @@ dist
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 /.idea/vcs.xml
 /.idea/monday-com-graphql-assistant.iml
+/.idea/jsLibraryMappings.xml

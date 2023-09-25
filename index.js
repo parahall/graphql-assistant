@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const makersAPI = require('./makers-api');
 const vectorDbApi = require('./vector-db-api');
+const graphqlAssistantAgent = require('./graphql-assistant-agent');
 const app = express();
 app.use(express.json());
 const port = process.env.PORT;
@@ -11,7 +12,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/prompt', async (req, res) => {
-  const result = await makersAPI.prompt();
+  const prompt = req.body.prompt;
+  const result = await makersAPI.prompt(prompt);
+  res.status(200).json(result);
+});
+
+app.post('/generate_description', async (req, res) => {
+  const result = await graphqlAssistantAgent.generateDescription();
   res.status(200).json(result);
 });
 
