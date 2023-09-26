@@ -53,8 +53,13 @@ function cleanFormattingCharacters(string) {
 }
 
 
-function createPrompt(query) {
-    return 'You\'re an expert in GraphQL and intimately familiar with the monday.com API. \n' + 'I have a GraphQL query from the monday.com API that I\'d like you to explain. \n' + 'Please cover the query\'s purpose, the arguments it accepts, and the output it generates.\n' + '\n' + 'Here is the GraphQL query:\n' + '\n' + '```graphql\n' + `${query}\n`;
+function createPromptGraphQLDescription(query) {
+    return 'You\'re an expert in GraphQL and intimately familiar with the monday.com API. \n' +
+        'I have a GraphQL query from the monday.com API that I\'d like you to explain. \n' +
+        'Please cover the query\'s purpose, the arguments it accepts, and the output it generates.\n' +
+        '\n' + 'Here is the GraphQL query:\n' +
+        '\n' + '```graphql\n' +
+        `${query}\n`;
 }
 
 // Function to sanitize the description for CSV
@@ -72,7 +77,7 @@ async function generateDescription() {
         const query = row.query;
         try {
             console.log(`Processing row ${i + 1} out of ${rows.length}`);
-            const prompt = createPrompt(query);
+            const prompt = createPromptGraphQLDescription(query);
             const result = await makersApi.prompt(prompt);
             const candidates = result[0].candidates;
             const sanitizedDesc = sanitizeForCSV(candidates[0].output);
